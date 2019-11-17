@@ -1,5 +1,7 @@
 package com.tjclawson.secretrecipe.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +21,7 @@ public class Ingredient {
 
     @ManyToOne
     @JoinColumn(name = "recipeid")
+    @JsonIgnoreProperties("recipe")
     private Recipe recipe;
 
     public Ingredient() {

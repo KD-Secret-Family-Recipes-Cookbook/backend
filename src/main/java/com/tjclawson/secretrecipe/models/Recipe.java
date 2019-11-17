@@ -1,5 +1,7 @@
 package com.tjclawson.secretrecipe.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,20 +24,28 @@ public class Recipe {
     private String instructions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    private List<UserRecipe> userrecipes = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
+    @JsonIgnoreProperties("user")
+    private User user;
+
 
     public Recipe() {
     }
 
-    public Recipe(String recipename, String source, String category, String instructions, List<Ingredient> ingredients) {
+    public Recipe(String recipename, String source, String category, String instructions, List<Ingredient> ingredients, User user) {
         this.recipename = recipename;
         this.source = source;
         this.category = category;
         this.instructions = instructions;
+        for (Ingredient ing : ingredients) {
+            ing.setRecipe(this);
+        }
         this.ingredients = ingredients;
+        this.user = user;
     }
 
     public long getRecipeid() {
@@ -86,11 +96,11 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public List<UserRecipe> getUserrecipes() {
-        return userrecipes;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserrecipes(List<UserRecipe> userrecipes) {
-        this.userrecipes = userrecipes;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
