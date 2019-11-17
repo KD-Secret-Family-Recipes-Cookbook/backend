@@ -38,4 +38,16 @@ public class RecipeController {
         responseHeaders.setLocation(newRecipeUri);
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
+
+    @PutMapping(value = "/recipe/{recipeid}", consumes = {"application/json"})
+    public ResponseEntity<?> updateRecipe(@Valid @RequestBody Recipe updateRecipe, @PathVariable long recipeid) {
+        recipeService.update(recipeid, updateRecipe);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/recipe/{recipeid}")
+    public ResponseEntity<?> deleteRecipeById(@PathVariable long recipeid) {
+        recipeService.delete(recipeid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

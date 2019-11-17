@@ -15,22 +15,22 @@ public class Ingredient {
     @Column(nullable = false)
     private String ingredientname;
 
-    private int quantity;
+    private double quantity;
 
     private String measurement;
 
     @ManyToOne
     @JoinColumn(name = "recipeid")
-    @JsonIgnoreProperties("recipe")
+    @JsonIgnoreProperties("user")
     private Recipe recipe;
 
     public Ingredient() {
     }
 
-    public Ingredient(String ingredientname, int quantity, String measurement, Recipe recipe) {
-        this.ingredientname = ingredientname;
+    public Ingredient(String ingredientname, double quantity, String measurement, Recipe recipe) {
+        this.ingredientname = ingredientname.toLowerCase();
         this.quantity = quantity;
-        this.measurement = measurement;
+        this.measurement = measurement.toLowerCase();
         this.recipe = recipe;
     }
 
@@ -47,14 +47,14 @@ public class Ingredient {
     }
 
     public void setIngredientname(String ingredientname) {
-        this.ingredientname = ingredientname;
+        this.ingredientname = ingredientname.toLowerCase();
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -63,7 +63,7 @@ public class Ingredient {
     }
 
     public void setMeasurement(String measurement) {
-        this.measurement = measurement;
+        this.measurement = measurement.toLowerCase();
     }
 
     public Recipe getRecipe() {

@@ -8,4 +8,8 @@ import java.util.List;
 public interface RecipeRepo extends CrudRepository<Recipe, Long> {
 
     List<Recipe> findAllByUser_Userid(long userid);
+
+    List<Recipe> findByRecipenameContaining(String name);
+
+    Recipe findByRecipename(String name);
 }

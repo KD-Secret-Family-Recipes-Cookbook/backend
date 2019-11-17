@@ -2,7 +2,13 @@ package com.tjclawson.secretrecipe.services;
 
 import com.tjclawson.secretrecipe.models.Ingredient;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public interface IngredientService {
 
-    Ingredient save(Ingredient ingredient);
+    Ingredient save(Ingredient ingredient, long recipeid);
+
+    void delete(long ingredientid, long recipeid);
+
+    Ingredient update(Ingredient ingredient, long ingredientid, long recipeid);
 }

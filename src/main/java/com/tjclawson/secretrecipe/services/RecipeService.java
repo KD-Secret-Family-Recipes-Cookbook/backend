@@ -13,7 +13,11 @@ public interface RecipeService {
 
     Recipe findByName(String name);
 
+    Recipe findRecipeById(long id);
+
     Recipe save(Recipe recipe);
 
     Recipe update(long recipeid, Recipe recipe);
+
+    void delete(long recipeid);
 }

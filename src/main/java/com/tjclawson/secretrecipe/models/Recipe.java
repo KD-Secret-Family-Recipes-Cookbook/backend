@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "recipes")
+@JsonIgnoreProperties("user")
 public class Recipe {
 
     @Id
@@ -23,8 +24,10 @@ public class Recipe {
 
     private String instructions;
 
+    private String imageurl;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("recipe")
+    @JsonIgnoreProperties(value = "recipe", allowSetters = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToOne
@@ -36,16 +39,17 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String recipename, String source, String category, String instructions, List<Ingredient> ingredients, User user) {
-        this.recipename = recipename;
-        this.source = source;
-        this.category = category;
+    public Recipe(String recipename, String source, String category, String instructions, List<Ingredient> ingredients, User user, String imageurl) {
+        this.recipename = recipename.toLowerCase();
+        this.source = source.toLowerCase();
+        this.category = category.toLowerCase();
         this.instructions = instructions;
         for (Ingredient ing : ingredients) {
             ing.setRecipe(this);
         }
         this.ingredients = ingredients;
         this.user = user;
+        this.imageurl = imageurl;
     }
 
     public long getRecipeid() {
@@ -61,7 +65,7 @@ public class Recipe {
     }
 
     public void setRecipename(String recipename) {
-        this.recipename = recipename;
+        this.recipename = recipename.toLowerCase();
     }
 
     public String getSource() {
@@ -69,7 +73,7 @@ public class Recipe {
     }
 
     public void setSource(String source) {
-        this.source = source;
+        this.source = source.toLowerCase();
     }
 
     public String getCategory() {
@@ -102,5 +106,13 @@ public class Recipe {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }
