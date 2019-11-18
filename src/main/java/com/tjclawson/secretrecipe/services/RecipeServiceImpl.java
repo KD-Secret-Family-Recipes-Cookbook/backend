@@ -40,26 +40,54 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public List<Recipe> findRecipeByNamelike(String name) {
-        return recipeRepo.findByRecipenameContaining(name.toLowerCase());
+        User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
+        List<Recipe> recipes = recipeRepo.findByRecipenameContainingAndUser_Userid(name.toLowerCase(), currentUser.getUserid());
+        if (recipes.size() == 0) {
+            throw new EntityNotFoundException("No recipes with name " + name + " found");
+        }
+        return recipes;
+    }
+
+    @Override
+    public List<Recipe> findRecipeByCategorylike(String category) {
+        User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
+        List<Recipe> recipes = recipeRepo.findByCategoryContainingAndUser_Userid(category, currentUser.getUserid());
+        if (recipes.size() == 0) {
+            throw new EntityNotFoundException("No recipes with category " + category + " found");
+        }
+        return recipes;
     }
 
     @Override
     public Recipe findByName(String name) {
-        Recipe recipe = recipeRepo.findByRecipename(name.toLowerCase());
-        if (recipe != null) {
+        User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
+        Recipe recipe = recipeRepo.findByRecipenameAndUser_Userid(name.toLowerCase(), currentUser.getUserid());
+        if (recipe == null) {
             throw new EntityNotFoundException("Recipe with name " + name + " not found");
         }
         return recipe;
     }
 
     @Override
-    public Recipe findRecipeById(long id) {
-        return recipeRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Recipe with id " + id + " not found"));
+    public Recipe findRecipeById(long recipeid) {
+        User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
+        Recipe recipe = recipeRepo.findByRecipeidAndUser_Userid(recipeid, currentUser.getUserid());
+        if (recipe == null) {
+            throw new EntityNotFoundException("Recipe with id " + recipeid + " not found");
+        }
+        return recipe;
     }
 
     @Transactional
     @Override
     public Recipe save(Recipe recipe) {
+        User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
+        List<Recipe> recipes = recipeRepo.findAllByUser_Userid(currentUser.getUserid());
+        for (Recipe r : recipes) {
+            if (r.getRecipename().equals(recipe.getRecipename())) {
+                throw new EntityNotFoundException("Recipe with name " + recipe.getRecipename() + " already exists");
+            }
+        }
         Recipe newRecipe = new Recipe();
         newRecipe.setRecipename(recipe.getRecipename());
         newRecipe.setSource(recipe.getSource());
@@ -82,7 +110,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe update(long recipeid, Recipe recipe) {
         Recipe updateRecipe = recipeRepo.findById(recipeid).orElseThrow(() -> new EntityNotFoundException("Recipe with id " + recipeid + "not found"));
-        System.out.println(updateRecipe.getCategory());
         User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
         if (updateRecipe.getUser().getUserid() != currentUser.getUserid()) {
             throw new EntityNotFoundException("Permission denied");

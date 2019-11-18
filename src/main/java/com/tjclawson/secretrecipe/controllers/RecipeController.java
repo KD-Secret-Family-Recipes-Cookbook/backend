@@ -27,6 +27,30 @@ public class RecipeController {
         return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/recipe/namelike/{recipename}", produces = {"application/json"})
+    public ResponseEntity<?> findRecipeByNamelike(@PathVariable String recipename) {
+        List<Recipe> recipes = recipeService.findRecipeByNamelike(recipename);
+        return new ResponseEntity<>(recipes, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{recipename}", produces = {"application/json"})
+    public ResponseEntity<?> findRecipeByName(@PathVariable String recipename) {
+        Recipe recipe = recipeService.findByName(recipename);
+        return new ResponseEntity<>(recipe, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/recipe/{recipeid}", produces = {"application/json"})
+    public ResponseEntity<?> findRecipeById(@PathVariable long recipeid) {
+        Recipe recipe = recipeService.findRecipeById(recipeid);
+        return new ResponseEntity<>(recipe, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/recipe/categorylike/{recipecategory}", produces = {"application/json"})
+    public ResponseEntity<?> findRecipeByCategorylike(@PathVariable String recipecategory) {
+        List<Recipe> recipes = recipeService.findRecipeByNamelike(recipecategory);
+        return new ResponseEntity<>(recipes, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/recipe", consumes = {"application/json"})
     public ResponseEntity<?> addNewRecipe(@Valid @RequestBody Recipe newRecipe) {
         newRecipe = recipeService.save(newRecipe);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "recipes")
+@Table(name = "recipes", uniqueConstraints = {@UniqueConstraint(columnNames = {"recipename", "userid"})})
 @JsonIgnoreProperties("user")
 public class Recipe {
 

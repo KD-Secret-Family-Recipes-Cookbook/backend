@@ -11,6 +11,8 @@ public interface RecipeService {
 
     List<Recipe> findRecipeByNamelike(String name);
 
+    List<Recipe> findRecipeByCategorylike(String category);
+
     Recipe findByName(String name);
 
     Recipe findRecipeById(long id);

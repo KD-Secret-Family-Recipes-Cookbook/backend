@@ -9,7 +9,12 @@ public interface RecipeRepo extends CrudRepository<Recipe, Long> {
 
     List<Recipe> findAllByUser_Userid(long userid);
 
-    List<Recipe> findByRecipenameContaining(String name);
+    List<Recipe> findByRecipenameContainingAndUser_Userid(String name, long userid);
 
-    Recipe findByRecipename(String name);
+    Recipe findByRecipenameAndUser_Userid(String name, long userid);
+
+    Recipe findByRecipeidAndUser_Userid(long recipeid, long userid);
+
+    List<Recipe> findByCategoryContainingAndUser_Userid(String catefory, long userid);
+
 }
