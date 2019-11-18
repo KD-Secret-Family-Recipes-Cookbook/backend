@@ -17,21 +17,24 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
     @Column(nullable = false, unique = true)
+    @JsonIgnoreProperties(allowSetters = true)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnoreProperties(allowSetters = true)
     private String password;
 
     @Column(nullable = false)
     @Email(message = "Email must be in valid format")
+    @JsonIgnoreProperties(allowSetters = true)
     private String useremail;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
     private List<Recipe> recipes = new ArrayList<>();
 
     public User() {
@@ -72,6 +75,10 @@ public class User {
     public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
+    }
+
+    public void setPasswordNotEncrypt(String password) {
+        this.password = password;
     }
 
     public String getUseremail() {

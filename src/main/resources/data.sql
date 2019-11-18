@@ -3,23 +3,23 @@ DELETE FROM recipes;
 DELETE FROM ingredients;
 
 INSERT INTO users(userid, username, password, useremail)
-        VALUES  (1, 'test1', 'test1', 'test@test.com'),
-                (2, 'test2', 'test2', 'test@test.com'),
-                (3, 'test3', 'test3', 'test@test.com'),
-                (4, 'test4', 'test4', 'test@test.com'),
-                (5, 'test5', 'test5', 'test@test.com');
+        VALUES  (1000, 'test1', 'test1', 'test@test.com'),
+                (1001, 'test2', 'test2', 'test@test.com'),
+                (1002, 'test3', 'test3', 'test@test.com'),
+                (1003, 'test4', 'test4', 'test@test.com'),
+                (1004, 'test5', 'test5', 'test@test.com');
 
 INSERT INTO recipes(recipeid, recipename, source, category, instructions, userid, imageurl)
-        VALUES  (1, 'test1', 'test1', 'test1', 'testestesetesetesetestsetsteetest', 1, 'https://www.fakeurl.com'),
-                (2, 'test1', 'test1', 'test1', 'testestesetesetesetestsetsteetest', 1, 'https://www.fakeurl.com'),
-                (3, 'test2', 'test2', 'test2', 'testestesetesetesetestsetsteetest', 2, 'https://www.fakeurl.com'),
-                (4, 'test2', 'test2', 'test2', 'testestesetesetesetestsetsteetest', 2, 'https://www.fakeurl.com'),
-                (5, 'test3', 'test3', 'test3', 'testestesetesetesetestsetsteetest', 3, 'https://www.fakeurl.com'),
-                (6, 'test3', 'test3', 'test3', 'testestesetesetesetestsetsteetest', 3, 'https://www.fakeurl.com'),
-                (7, 'test4', 'test4', 'test4', 'testestesetesetesetestsetsteetest', 4, 'https://www.fakeurl.com'),
-                (8, 'test4', 'test4', 'test4', 'testestesetesetesetestsetsteetest', 4, 'https://www.fakeurl.com'),
-                (9, 'test5', 'test5', 'test5', 'testestesetesetesetestsetsteetest', 5, 'https://www.fakeurl.com'),
-                (10, 'test5', 'test5', 'test5', 'testestesetesetesetestsetsteetest', 5, 'https://www.fakeurl.com');
+        VALUES  (1, 'test1', 'test1', 'test1', 'testestesetesetesetestsetsteetest', 1000, 'https://www.fakeurl.com'),
+                (2, 'test1', 'test1', 'test1', 'testestesetesetesetestsetsteetest', 1000, 'https://www.fakeurl.com'),
+                (3, 'test2', 'test2', 'test2', 'testestesetesetesetestsetsteetest', 1001, 'https://www.fakeurl.com'),
+                (4, 'test2', 'test2', 'test2', 'testestesetesetesetestsetsteetest', 1001, 'https://www.fakeurl.com'),
+                (5, 'test3', 'test3', 'test3', 'testestesetesetesetestsetsteetest', 1002, 'https://www.fakeurl.com'),
+                (6, 'test3', 'test3', 'test3', 'testestesetesetesetestsetsteetest', 1002, 'https://www.fakeurl.com'),
+                (7, 'test4', 'test4', 'test4', 'testestesetesetesetestsetsteetest', 1003, 'https://www.fakeurl.com'),
+                (8, 'test4', 'test4', 'test4', 'testestesetesetesetestsetsteetest', 1003, 'https://www.fakeurl.com'),
+                (9, 'test5', 'test5', 'test5', 'testestesetesetesetestsetsteetest', 1004, 'https://www.fakeurl.com'),
+                (10, 'test5', 'test5', 'test5', 'testestesetesetesetestsetsteetest', 1004, 'https://www.fakeurl.com');
 
 INSERT INTO ingredients(ingredientid, ingredientname, quantity, measurement, recipeid)
         VALUES  (1, 'test1', 56, 'testmeasurement', 1),

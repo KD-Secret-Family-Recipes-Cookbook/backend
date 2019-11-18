@@ -5,6 +5,7 @@ import com.tjclawson.secretrecipe.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepo userRepo;
 
+    @Transactional
     @Override
     public User save(User user) {
         User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
         newUser.setUseremail(user.getUseremail());
-        newUser.setRecipes(user.getRecipes());
+        if (user.getRecipes() != null) {
+            newUser.setRecipes(user.getRecipes());
+        }
         return userRepo.save(newUser);
     }
 
