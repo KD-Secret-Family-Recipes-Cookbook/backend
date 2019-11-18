@@ -12,7 +12,7 @@ import java.util.List;
 public class Recipe {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long recipeid;
 
     @Column(nullable = false)

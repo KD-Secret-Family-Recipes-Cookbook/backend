@@ -47,7 +47,7 @@ public class RecipeController {
 
     @GetMapping(value = "/recipe/categorylike/{recipecategory}", produces = {"application/json"})
     public ResponseEntity<?> findRecipeByCategorylike(@PathVariable String recipecategory) {
-        List<Recipe> recipes = recipeService.findRecipeByNamelike(recipecategory);
+        List<Recipe> recipes = recipeService.findRecipeByCategorylike(recipecategory);
         return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 

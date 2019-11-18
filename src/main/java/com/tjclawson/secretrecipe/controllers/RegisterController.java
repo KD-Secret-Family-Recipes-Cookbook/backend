@@ -15,7 +15,7 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/createnewuser",
+    @PostMapping(value = "/register",
             consumes = {"application/json"},
             produces = {"application/json"})
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserMinimum newminuser) throws URISyntaxException {
