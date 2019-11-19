@@ -1,5 +1,7 @@
 package com.tjclawson.secretrecipe.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.tjclawson.secretrecipe.exceptions.ResourceFoundException;
 import com.tjclawson.secretrecipe.exceptions.ResourceNotFoundException;
 import com.tjclawson.secretrecipe.models.Ingredient;
@@ -12,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Qualifier("recipeService")
@@ -33,6 +35,16 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Autowired
     private IngredientRepo ingredientRepo;
+
+    private String cloudName = System.getenv("CLOUDINARYNAME");
+    private String cloudKey = System.getenv("CLOUDINARYKEY");
+    private String cloudSecret = System.getenv("CLOUDINARYSECRET");
+
+    public Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", cloudName,
+            "api_key", cloudKey,
+            "api_secret", cloudSecret
+    ));
 
     @Override
     public List<Recipe> findRecipesByCurrentUser() {
@@ -181,5 +193,22 @@ public class RecipeServiceImpl implements RecipeService {
             throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
         }
         recipeRepo.deleteById(recipeid);
+    }
+
+    @Transactional
+    @Override
+    public Map uploadImage(MultipartFile file, long recipeid) {
+        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
+        if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
+            throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
+        }
+        Map uploadResult = null;
+        try {
+            uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        } catch (IOException e) {e.printStackTrace();
+        }
+        recipe.setImageurl(uploadResult.get("url").toString());
+        recipeRepo.save(recipe);
+        return uploadResult;
     }
 }

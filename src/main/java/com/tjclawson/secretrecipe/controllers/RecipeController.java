@@ -1,5 +1,6 @@
 package com.tjclawson.secretrecipe.controllers;
 
+import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tjclawson.secretrecipe.models.Recipe;
@@ -9,12 +10,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/recipes")
@@ -63,6 +67,12 @@ public class RecipeController {
                 .toUri();
         responseHeaders.setLocation(newRecipeUri);
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/recipe/{recipeid}/uploadimage", produces = {"application/json"})
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable long recipeid) {
+        Map uploadResult = recipeService.uploadImage(file, recipeid);
+        return new ResponseEntity<>(uploadResult, HttpStatus.OK);
     }
 
     @PutMapping(value = "/recipe/{recipeid}", consumes = {"application/json"})

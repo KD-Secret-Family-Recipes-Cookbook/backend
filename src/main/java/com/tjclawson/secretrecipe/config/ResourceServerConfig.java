@@ -29,6 +29,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/createnewuser",
                         "/login")
                 .permitAll()
+                .antMatchers("/**")
+                .authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());

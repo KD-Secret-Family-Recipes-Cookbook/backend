@@ -2,8 +2,10 @@ package com.tjclawson.secretrecipe.services;
 
 import com.tjclawson.secretrecipe.models.Recipe;
 import com.tjclawson.secretrecipe.models.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RecipeService {
 
@@ -22,4 +24,6 @@ public interface RecipeService {
     Recipe update(long recipeid, Recipe recipe);
 
     void delete(long recipeid);
+
+    Map uploadImage(MultipartFile file, long recipeid);
 }
