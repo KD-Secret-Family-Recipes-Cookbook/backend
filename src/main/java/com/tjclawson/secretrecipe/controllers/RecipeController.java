@@ -1,5 +1,7 @@
 package com.tjclawson.secretrecipe.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tjclawson.secretrecipe.models.Recipe;
 import com.tjclawson.secretrecipe.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;

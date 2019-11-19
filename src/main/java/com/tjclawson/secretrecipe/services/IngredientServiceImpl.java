@@ -1,5 +1,6 @@
 package com.tjclawson.secretrecipe.services;
 
+import com.tjclawson.secretrecipe.exceptions.ResourceNotFoundException;
 import com.tjclawson.secretrecipe.models.Ingredient;
 import com.tjclawson.secretrecipe.models.Recipe;
 import com.tjclawson.secretrecipe.repos.IngredientRepo;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 @Qualifier("ingredientService")
@@ -31,9 +30,9 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     @Override
     public Ingredient save(Ingredient ingredient, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new EntityNotFoundException("Recipe with id " + recipeid + " not found"));
+        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
         if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new EntityNotFoundException("Permission denied");
+            throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
         }
         Ingredient newIngredient = new Ingredient();
         newIngredient.setIngredientname(ingredient.getIngredientname());
@@ -46,23 +45,23 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     @Override
     public void delete(long ingredientid, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new EntityNotFoundException("Recipe with id " + recipeid + " not found"));
+        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
         if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new EntityNotFoundException("Permission denied");
+            throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
         }
-        ingredientRepo.findById(ingredientid).orElseThrow(() -> new EntityNotFoundException("Ingredient with id " + ingredientid + " not found"));
+        ingredientRepo.findById(ingredientid).orElseThrow(() -> new ResourceNotFoundException("Ingredient with id " + ingredientid + " not found"));
         ingredientRepo.deleteById(ingredientid);
     }
 
     @Transactional
     @Override
     public Ingredient update(Ingredient ingredient, long ingredientid, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new EntityNotFoundException("Recipe with id " + recipeid + " not found"));
+        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
         if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new EntityNotFoundException("Permission denied");
+            throw new ResourceNotFoundException("Permission denied");
         }
         Ingredient updateIngredient = ingredientRepo.findById(ingredientid)
-                .orElseThrow(() -> new EntityNotFoundException("Ingredient with id " + ingredientid + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient with id " + ingredientid + " not found"));
         if (ingredient.getIngredientname() != null) {
             updateIngredient.setIngredientname(ingredient.getIngredientname());
         }
