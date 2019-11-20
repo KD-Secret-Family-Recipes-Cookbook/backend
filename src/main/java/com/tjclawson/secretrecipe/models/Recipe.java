@@ -1,6 +1,8 @@
 package com.tjclawson.secretrecipe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "recipes", uniqueConstraints = {@UniqueConstraint(columnNames = {"recipename", "userid"})})
 @JsonIgnoreProperties("user")
+@ApiModel(value = "Recipe")
 public class Recipe {
 
     @Id
@@ -33,6 +36,7 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     @JsonIgnoreProperties("user")
+    @ApiModelProperty(hidden = true)
     private User user;
 
 

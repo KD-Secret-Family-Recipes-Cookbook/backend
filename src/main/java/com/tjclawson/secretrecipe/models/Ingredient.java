@@ -1,11 +1,14 @@
 package com.tjclawson.secretrecipe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ingredients")
+@ApiModel(value = "Ingredient")
 public class Ingredient {
 
     @Id
@@ -21,7 +24,8 @@ public class Ingredient {
 
     @ManyToOne
     @JoinColumn(name = "recipeid")
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties({"user", "recipe"})
+    @ApiModelProperty(hidden = true)
     private Recipe recipe;
 
     public Ingredient() {

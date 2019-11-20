@@ -1,6 +1,7 @@
 package com.tjclawson.secretrecipe.models;
 
 import com.tjclawson.secretrecipe.exceptions.ValidationError;
+import io.swagger.annotations.ApiModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ApiModel(value = "ErrorDetail", description = "Exceptions")
 public class ErrorDetail {
 
     private String title;

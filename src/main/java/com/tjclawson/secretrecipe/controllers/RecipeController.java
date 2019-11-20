@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tjclawson.secretrecipe.models.Recipe;
 import com.tjclawson.secretrecipe.services.RecipeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/recipes")
+@Api(tags = {"RecipesEndpoints"})
 public class RecipeController {
 
     @Autowired
     private RecipeService recipeService;
 
+    @ApiOperation(value = "Returns all user's recipes", response = Recipe.class, responseContainer = "List")
     @GetMapping(value = "/recipes", produces = {"application/json"})
     public ResponseEntity<?> listUserRecipes() {
         List<Recipe> recipes = recipeService.findRecipesByCurrentUser();

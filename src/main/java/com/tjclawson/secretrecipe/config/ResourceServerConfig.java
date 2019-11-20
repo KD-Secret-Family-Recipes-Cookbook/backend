@@ -26,11 +26,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/",
+                        "/swagger-resources/**",
+                        "/swagger-resource/**",
+                        "/swagger-ui.html",
+                        "/v2/api-docs",
+                        "/webjars/**",
                         "/createnewuser",
                         "/login")
                 .permitAll()
-                .antMatchers("/**")
-                .authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());
