@@ -29,7 +29,7 @@ public class Recipe {
 
     private String imageurl;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "recipe", allowSetters = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
