@@ -1,5 +1,6 @@
 package com.tjclawson.secretrecipe.services;
 
+import com.tjclawson.secretrecipe.exceptions.ResourceFoundException;
 import com.tjclawson.secretrecipe.models.User;
 import com.tjclawson.secretrecipe.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(User user) {
+        List<User> list = new ArrayList<>();
+        userRepo.findAll().iterator().forEachRemaining(list::add);
+        for (User u : list) {
+            if (u.getUsername().equals(user.getUsername())) {
+                throw new ResourceFoundException("Username " + user.getUsername() + " is already taken");
+            }
+        }
         User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
