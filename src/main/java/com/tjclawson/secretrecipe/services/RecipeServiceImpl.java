@@ -96,12 +96,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe save(Recipe recipe) {
         User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
-        List<Recipe> recipes = recipeRepo.findAllByUser_Userid(currentUser.getUserid());
-        for (Recipe r : recipes) {
-            if (r.getRecipename().equals(recipe.getRecipename())) {
-                throw new ResourceFoundException("Recipe with name " + recipe.getRecipename() + " already exists");
-            }
+        if (recipeRepo.findByRecipenameAndUser_Userid(recipe.getRecipename(), currentUser.getUserid()) != null) {
+            throw new ResourceFoundException("Recipe with name " + recipe.getRecipename() + " already exists");
         }
+
         Recipe newRecipe = new Recipe();
         if (recipe.getRecipename() == null) {
             throw new ResourceNotFoundException("You must provide a recipe name when creating a recipe");
@@ -168,7 +166,6 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (recipe.getIngredients().size() > 0) {
             List<Ingredient> updateIngredients = recipe.getIngredients();
-            List<Ingredient> currentIngredients = updateRecipe.getIngredients();
             for (Ingredient ing : updateIngredients) {
                 if (ing.getIngredientid() != 0) {
                     Ingredient updateIngredient = ingredientRepo.findById(ing.getIngredientid()).orElseThrow();
@@ -205,8 +202,7 @@ public class RecipeServiceImpl implements RecipeService {
         Map uploadResult = null;
         try {
             uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        } catch (IOException e) {e.printStackTrace();
-        }
+        } catch (IOException e) {e.printStackTrace(); }
         recipe.setImageurl(uploadResult.get("url").toString());
         recipeRepo.save(recipe);
         return uploadResult;
