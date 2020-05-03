@@ -16,8 +16,7 @@ INSERT INTO users(userid, username, password, useremail)
 alter sequence hibernate_sequence restart with 6;
 
 INSERT INTO recipes(recipeid, recipename, source, category, instructions, userid, imageurl)
-        VALUES  (1, 'test1', 'test1', 'test1', 'test instructions', 1, 'https://www.fakeurl.com'),
-                (2, 'test11', 'test1', 'test1', 'test instructions', 1, 'https://www.fakeurl.com'),
+        VALUES  (2, 'PB & J', 'Society', 'Sandwich', '1. Spread Jelly on slice of bread 2. Spread PB on other slice of bread 3. Put slices together', 1, 'https://www.fakeurl.com'),
                 (3, 'test2', 'test2', 'test2', 'test instructions', 2, 'https://www.fakeurl.com'),
                 (4, 'test22', 'test2', 'test2', 'test instructions', 2, 'https://www.fakeurl.com'),
                 (5, 'test3', 'test3', 'test3', 'test instructions', 3, 'https://www.fakeurl.com'),
@@ -30,26 +29,25 @@ INSERT INTO recipes(recipeid, recipename, source, category, instructions, userid
 alter sequence hibernate_sequence restart with 11;
 
 INSERT INTO ingredients(ingredientid, ingredientname, quantity, measurement, recipeid)
-        VALUES  (1, 'test1', 56, 'testmeasurement', 1),
-                (2, 'test1', 56, 'testmeasurement', 1),
-                (3, 'test1', 56, 'testmeasurement', 2),
-                (4, 'test1', 56, 'testmeasurement', 2),
-                (5, 'test1', 56, 'testmeasurement', 3),
-                (6, 'test1', 56, 'testmeasurement', 3),
-                (7, 'test1', 56, 'testmeasurement', 4),
-                (8, 'test1', 56, 'testmeasurement', 4),
-                (9, 'test1', 56, 'testmeasurement', 5),
-                (10, 'test1', 56, 'testmeasurement', 5),
-                (11, 'test1', 56, 'testmeasurement', 6),
-                (12, 'test1', 56, 'testmeasurement', 6),
-                (13, 'test1', 56, 'testmeasurement', 7),
-                (14, 'test1', 56, 'testmeasurement', 7),
-                (15, 'test1', 56, 'testmeasurement', 8),
-                (16, 'test1', 56, 'testmeasurement', 8),
-                (17, 'test1', 56, 'testmeasurement', 9),
-                (18, 'test1', 56, 'testmeasurement', 9),
-                (19, 'test1', 56, 'testmeasurement', 10),
-                (20, 'test1', 56, 'testmeasurement', 10);
+        VALUES  (4, 'Peanut Butter', 3, 'tbsp', 2),
+                (5, 'Raspberry Jelly', 2, 'tbsp', 2),
+                (6, 'Bread', 2, 'slices', 2),
+                (7, 'test1', 56, 'testmeasurement', 3),
+                (8, 'test1', 56, 'testmeasurement', 3),
+                (9, 'test1', 56, 'testmeasurement', 4),
+                (10, 'test1', 56, 'testmeasurement', 4),
+                (11, 'test1', 56, 'testmeasurement', 5),
+                (12, 'test1', 56, 'testmeasurement', 5),
+                (13, 'test1', 56, 'testmeasurement', 6),
+                (14, 'test1', 56, 'testmeasurement', 6),
+                (15, 'test1', 56, 'testmeasurement', 7),
+                (16, 'test1', 56, 'testmeasurement', 7),
+                (17, 'test1', 56, 'testmeasurement', 8),
+                (18, 'test1', 56, 'testmeasurement', 8),
+                (19, 'test1', 56, 'testmeasurement', 9),
+                (20, 'test1', 56, 'testmeasurement', 9),
+                (21, 'test1', 56, 'testmeasurement', 10),
+                (22, 'test1', 56, 'testmeasurement', 10);
 
 
-alter sequence hibernate_sequence restart with 21;
+alter sequence hibernate_sequence restart with 23;
