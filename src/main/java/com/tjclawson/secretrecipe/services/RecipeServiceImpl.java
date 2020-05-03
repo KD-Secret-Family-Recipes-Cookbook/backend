@@ -96,12 +96,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe save(Recipe recipe) {
         User currentUser = userRepo.findByUsername(userAuditing.getCurrentAuditor().get());
-        List<Recipe> recipes = recipeRepo.findAllByUser_Userid(currentUser.getUserid());
-        for (Recipe r : recipes) {
-            if (r.getRecipename().equals(recipe.getRecipename())) {
-                throw new ResourceFoundException("Recipe with name " + recipe.getRecipename() + " already exists");
-            }
+        if (recipeRepo.findByRecipenameAndUser_Userid(recipe.getRecipename(), currentUser.getUserid()) != null) {
+            throw new ResourceFoundException("Recipe with name " + recipe.getRecipename() + " already exists");
         }
+
         Recipe newRecipe = new Recipe();
         if (recipe.getRecipename() == null) {
             throw new ResourceNotFoundException("You must provide a recipe name when creating a recipe");
