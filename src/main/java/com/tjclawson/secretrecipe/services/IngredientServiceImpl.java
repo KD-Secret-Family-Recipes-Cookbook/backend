@@ -30,10 +30,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     @Override
     public Ingredient save(Ingredient ingredient, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
-        if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
-        }
+        Recipe recipe = getRecipeOrThrowException(recipeid);
         Ingredient newIngredient = new Ingredient();
         newIngredient.setIngredientname(ingredient.getIngredientname());
         newIngredient.setQuantity(ingredient.getQuantity());
@@ -45,10 +42,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     @Override
     public void delete(long ingredientid, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
-        if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new ResourceNotFoundException("Recipe with id " + recipeid + " not found");
-        }
+        getRecipeOrThrowException(recipeid);
         ingredientRepo.findById(ingredientid).orElseThrow(() -> new ResourceNotFoundException("Ingredient with id " + ingredientid + " not found"));
         ingredientRepo.deleteById(ingredientid);
     }
@@ -56,10 +50,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional
     @Override
     public Ingredient update(Ingredient ingredient, long ingredientid, long recipeid) {
-        Recipe recipe = recipeRepo.findById(recipeid).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeid + " not found"));
-        if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
-            throw new ResourceNotFoundException("Permission denied");
-        }
+        getRecipeOrThrowException(recipeid);
         Ingredient updateIngredient = ingredientRepo.findById(ingredientid)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient with id " + ingredientid + " not found"));
         if (ingredient.getIngredientname() != null) {
@@ -74,5 +65,20 @@ public class IngredientServiceImpl implements IngredientService {
             updateIngredient.setMeasurement(ingredient.getMeasurement());
         }
         return ingredientRepo.save(updateIngredient);
+    }
+
+    /**
+     * Returns recipe, throws ResourceNotFoundException if recipe does not exist or if user is not owner of specified
+     * recipe
+     *
+     * @param recipeId
+     * @return Recipe
+     */
+    public Recipe getRecipeOrThrowException(long recipeId) {
+        Recipe recipe = recipeRepo.findById(recipeId).orElseThrow(() -> new ResourceNotFoundException("Recipe with id " + recipeId + " not found"));
+        if (recipe.getUser().getUserid() != userRepo.findByUsername(userAuditing.getCurrentAuditor().get()).getUserid()) {
+            throw new ResourceNotFoundException("Recipe with id " + recipeId + " not found");
+        }
+        return recipe;
     }
 }
